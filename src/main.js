@@ -38,13 +38,13 @@ Vue.prototype.$axios = axios
 function getServerConfig() {
   return new Promise((resolve, reject) => {
     axios.get('./serverConfig.json').then((result) => {
-      console.log(result) // 看打印出来的结果
+      // console.log(result) // 看打印出来的结果
       const config = result.data
       for (const key in config) {
         Vue.prototype[key] = config[key]
       }
       // 验证是否已经把属性挂在了Vue上
-      console.log(Vue.prototype.BASE_ADDR)
+      // console.log(Vue.prototype.BASE_ADDR)
       resolve()
     }).catch((error) => {
       console.log(error)

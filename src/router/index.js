@@ -56,23 +56,30 @@ export const constantRoutes = [
   },
 
   {
-    path: '/example',
+    path: '/teacher',
     component: Layout,
-    redirect: '/example/table',
-    name: 'Example',
-    meta: { title: 'Example', icon: 'example' },
+    redirect: '/teacher/index',
+    name: 'teacher',
+    meta: { title: '讲师管理', icon: 'example' },
     children: [
       {
-        path: 'table',
-        name: 'Table',
-        component: () => import('@/views/table/index'),
-        meta: { title: 'Table', icon: 'table' }
+        path: 'index',
+        name: '讲师列表',
+        component: () => import('@/views/edu/teacher/index'),
+        meta: { title: '讲师列表', icon: 'table' }
       },
       {
-        path: 'tree',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
-        meta: { title: 'Tree', icon: 'tree' }
+        path: 'add',
+        name: '新增讲师',
+        component: () => import('@/views/edu/teacher/add'),
+        meta: { title: '新增讲师', icon: 'tree' }
+      },
+      {
+        path: 'edit',
+        name: 'editTeacher',
+        component: () => import('@/views/edu/teacher/add'),
+        meta: { title: '编辑讲师', icon: 'tree' },
+        hidden: true
       }
     ]
   },

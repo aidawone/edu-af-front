@@ -1,5 +1,5 @@
 {
-    "BASE_API": "http://localhost:8080/WeChat/",
+    "BASE_API": "http://localhost:8080/",
     "BASE_ADDR": "http://49.234.112.31:8100/",
     "QRCODE_ADDR": "http://139.196.207.46:443/",
     "IMG_URL":"http://47.103.45.84:120/uploadImages/applogo/",
