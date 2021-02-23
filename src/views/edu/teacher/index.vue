@@ -111,12 +111,12 @@ export default {
     },
     //查询条件
     fetchData() {
-      this.saveConditions()
+      // this.saveConditions()
       this.getTeacherQueryPage(1)
     },
     resetData() {
       this.query = {}
-      this.getTeacherQueryPage()
+      this.getTeacherQueryPage( )
 
       this.clearConditions()
     },
