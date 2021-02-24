@@ -85,6 +85,79 @@ export const constantRoutes = [
   },
 
   {
+    path: '/subject',
+    component: Layout,
+    redirect: '/subject/index',
+    name: 'subject',
+    meta: { title: '课程管理', icon: 'example' },
+    children: [
+      {
+        path: 'index',
+        name: '课程列表',
+        component: () => import('@/views/edu/subject/index'),
+        meta: { title: '课程列表', icon: 'table' }
+      },
+      {
+        path: 'add',
+        name: '新增讲师',
+        component: () => import('@/views/edu/subject/add'),
+        meta: { title: '新增课程', icon: 'tree' }
+      },
+      {
+        path: 'edit',
+        name: 'editSubject',
+        component: () => import('@/views/edu/subject/add'),
+        meta: { title: '编辑课程', icon: 'tree' },
+        hidden: true
+      }
+    ]
+  },
+
+  {
+    path: '/course',
+    component: Layout,
+    redirect: '/course/index',
+    name: 'course',
+    meta: { title: '课程管理', icon: 'example' },
+    children: [
+      {
+        path: 'index',
+        name: '课程列表',
+        component: () => import('@/views/edu/course/index'),
+        meta: { title: '课程列表', icon: 'table' }
+      },
+      {
+        path: 'add',
+        name: '新增讲师',
+        component: () => import('@/views/edu/course/add'),
+        meta: { title: '新增课程', icon: 'tree' }
+      },
+      {
+        path: 'edit',
+        name: '编辑课程基本信息',
+        component: () => import('@/views/edu/course/add'),
+        meta: { title: '编辑课程基本信息', icon: 'tree' },
+        hidden: true
+      },
+      {
+        path: 'chapter',
+        name: '编辑课程大纲',
+        component: () => import('@/views/edu/course/chapter'),
+        meta: { title: '编辑课程大纲', icon: 'tree' },
+        hidden: true
+      },
+      {
+        path: 'publish',
+        name: '发布课程',
+        component: () => import('@/views/edu/course/publish'),
+        meta: { title: '发布课程', icon: 'tree' },
+        hidden: true
+      }
+
+    ]
+  },
+
+  {
     path: '/form',
     component: Layout,
     children: [

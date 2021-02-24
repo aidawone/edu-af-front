@@ -40,6 +40,12 @@ export default {
             method: 'put',
             data: teacher
         })
+    },
+    getTeachers(){
+        return request({
+            url: '/back/teacher/all',
+            method: 'get'
+        })
     }
 
 }
