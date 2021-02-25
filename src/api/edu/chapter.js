@@ -9,5 +9,37 @@ export default {
                 id: course
             }
         })
+    },
+    updateChapter(course) {
+        return request({
+            url: '/back/chapter/update',
+            method: 'put',
+            data: course
+        })
+    },
+    removeChapterById(id) {
+        return request({
+            url: '/back/chapter/delete',
+            method: 'delete',
+            params: {
+                id: id
+            }
+        })
+    },
+    addChapter(course) {
+        return request({
+            url: '/back/chapter/add',
+            method: 'post',
+            data: course
+        })
+    },
+    getChapterById(id) {
+        return request({
+            url: '/back/chapter/detail',
+            method: 'get',
+            params: {
+                id: id
+            }
+        })
     }
 }

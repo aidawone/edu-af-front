@@ -112,22 +112,24 @@ export default {
     }
   },
   created() {
+    //判断是更新还是新增
     this.getTeachers()
-    this.getParentSubject()
+
+    if (this.$route.query && this.$route.query.id) {
+      //回显数据
+      this.courseInfo.id = this.$route.query.id
+      this.getCourseInfo()
+    } else {
+      this.getParentSubject()
+    }
   },
   methods: {
     next() {
-      Course.saveCourse(this.courseInfo).then(response => {
-        this.courseInfo.id = response.data.id
-        this.$message({
-          type: 'success',
-          message: '保存成功'
-        })
-        this.$router.push({
-          path: '/course/chapter',
-          query: { id: response.data.id }
-        })
-      })
+      if (this.courseInfo.id) {
+        this.updateCourse()
+      }else{
+        this.saveCourse()
+      }
     },
     //获取全部
     getTeachers() {
@@ -162,6 +164,45 @@ export default {
         this.$message.error('上传头像图片大小不能超过 2MB!')
       }
       return isJPG && isLt2M
+    },
+    //获取信息
+    getCourseInfo() {
+      Course.getCourseInfo(this.courseInfo.id).then(response => {
+        this.courseInfo = response.data.items
+        Subject.getSubjectTree().then(response => {
+          this.parentSubjects = response.data.items
+          for (let i = 0; i < this.parentSubjects.length; i++) {
+            if (this.parentSubjects[i].id === this.courseInfo.subjectParentId) {
+              this.childrenSubject = this.parentSubjects[i].child
+            }
+          }
+        })
+      })
+    },
+    saveCourse() {
+      Course.saveCourse(this.courseInfo).then(response => {
+        this.courseInfo.id = response.data.id
+        this.$message({
+          type: 'success',
+          message: '保存成功'
+        })
+        this.$router.push({
+          path: '/course/chapter',
+          query: { id: response.data.id }
+        })
+      })
+    },
+    updateCourse() {
+      Course.updateById(this.courseInfo).then(response => {
+        this.$message({
+          type: 'success',
+          message: '更新成功'
+        })
+        this.$router.push({
+          path: '/course/chapter',
+          query: { id: response.data.id }
+        })
+      })
     }
   }
 }
