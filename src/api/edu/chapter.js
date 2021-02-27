@@ -41,5 +41,6 @@ export default {
                 id: id
             }
         })
-    }
+    },
+   
 }

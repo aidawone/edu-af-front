@@ -69,8 +69,30 @@
             <el-radio :label="false">默认</el-radio>
           </el-radio-group>
         </el-form-item>
+
         <el-form-item label="上传视频">
-          <!-- TODO -->
+          <el-upload
+            :on-success="handleVodUploadSuccess"
+            :on-remove="handleVodRemove"
+            :before-remove="beforeVodRemove"
+            :on-exceed="handleUploadExceed"
+            :file-list="fileList"
+            :action="API+'/vod/video/upload'"
+            :limit="1"
+            class="upload-demo"
+          >
+            <el-button size="small" type="primary">上传视频</el-button>
+            <el-tooltip placement="right-end">
+              <div slot="content">
+                最大支持1G，
+                <br />支持3GP、ASF、AVI、DAT、DV、FLV、F4V、
+                <br />GIF、M2T、M4V、MJ2、MJPEG、MKV、MOV、MP4、
+                <br />MPE、MPG、MPEG、MTS、OGG、QT、RM、RMVB、
+                <br />SWF、TS、VOB、WMV、WEBM 等视频格式上传
+              </div>
+              <i class="el-icon-question" />
+            </el-tooltip>
+          </el-upload>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -104,7 +126,11 @@ export default {
       },
       video: {
         //小节
-      }
+        videoSourceId: '',
+        videoOriginalName: ''
+      },
+      fileList: [], //上传文件列表
+      API: process.env.VUE_APP_BASE_API
     }
   },
   created() {
@@ -114,6 +140,38 @@ export default {
     }
   },
   methods: {
+    //上传视频成功
+    handleVodUploadSuccess(response, file, fileList) {
+      //上传视频id赋值
+      this.video.videoSourceId = response.data.hash
+      //上传视频名称赋值
+      this.video.videoOriginalName = file.name
+    },
+    //删除视频
+    handleVodRemove() {
+      //调用接口的删除视频的方法
+      Video.deleteVodByIds(this.video.videoSourceId).then(response => {
+        //提示信息
+        this.$message({
+          type: 'success',
+          message: '删除视频成功!'
+        })
+        //把文件列表清空
+        this.fileList = []
+        //把video视频id和视频名称值清空
+        //上传视频id赋值
+        this.video.videoSourceId = ''
+        //上传视频名称赋值
+        this.video.videoOriginalName = ''
+      })
+    },
+    //删除之前
+    beforeVodRemove(file, fileList) {
+      return this.$confirm(`确定移除 ${file.name}？`)
+    },
+    handleUploadExceed() {
+      this.$message.warning('想要重新上传视频，请先删除已上传的视频')
+    },
     saveOrUpdate() {
       //存在id的话就是更新
       if (this.chapterInfo.id) {
@@ -129,9 +187,9 @@ export default {
         this.chapterInfo = response.data.items
       })
     },
-    openCourseForm(){
-       this.dialogChapterFormVisible = true
-        this.chapterInfo = {}
+    openCourseForm() {
+      this.dialogChapterFormVisible = true
+      this.chapterInfo = {}
     },
     saveChapter() {
       this.chapterInfo.courseId = this.$route.query.id
@@ -198,11 +256,10 @@ export default {
     // ==========================小节=====================================================
     //添加课时
     saveVideoByCourse(id) {
-
       this.video = {}
-
+      this.fileList = []
       this.dialogVideoFormVisible = true
-
+      this.saveVideoBtnDisabled = false
       this.video.courseId = this.$route.query.id
       this.video.chapterId = id
     },
@@ -243,6 +300,12 @@ export default {
       this.dialogVideoFormVisible = true
       Video.getVideoById(id).then(response => {
         this.video = response.data.items
+        if (response.data.items.videoSourceId && this.fileList.length <=0) {
+          this.fileList.push({
+            name: response.data.items.videoOriginalName,
+            url: response.data.items.videoSourceId
+          })
+        }
       })
     },
     deleteVideo(id) {

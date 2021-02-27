@@ -32,5 +32,14 @@ export default {
                 id: id
             }
         })
+    },
+    deleteVodByIds(ids){
+        return request({
+            url: '/vod/video/delete',
+            method: 'delete',
+            params: {
+                id: ids
+            }
+        })
     }
 }
