@@ -157,6 +157,29 @@ export const constantRoutes = [
     ]
   },
 
+  
+  {
+    path: '/sta',
+    component: Layout,
+    redirect: '/sta/add',
+    name: 'sta',
+    meta: { title: '统计数据', icon: 'example' },
+    children: [
+      {
+        path: 'add',
+        name: '生成数据',
+        component: () => import('@/views/edu/sta/add'),
+        meta: { title: '生成数据', icon: 'table' }
+      },
+      {
+        path: 'index',
+        name: '图表展示',
+        component: () => import('@/views/edu/sta/index'),
+        meta: { title: '图表展示', icon: 'tree' }
+      },
+    ]
+  },
+
   {
     path: '/form',
     component: Layout,
